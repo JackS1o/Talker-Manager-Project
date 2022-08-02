@@ -23,13 +23,20 @@ const findTalkerId = async (req, res) => {
 
 const userToken = (req, res) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email e senha são obrigatórios' });
+  const emailFormat = /[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z.]*\w$/;
+  if (!email) {
+    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   }
-  
+  if (!emailFormat.test(email)) {
+    return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
+  }
+  if (!password) {
+    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
+  }
+   if (password.length < 6) {
+    return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+  }
   const token = crypto.randomBytes(8).toString('hex');
-
   return res.status(200).json({ token });
 };
 
