@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { findTalker, findTalkerId } = require('./middlewares/middlewares');
+const { findTalker, findTalkerId, userToken } = require('./middlewares/middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,6 +18,10 @@ app.get('/talker', findTalker, (_request, response) => {
 });
 
 app.get('/talker/:id', findTalkerId, (req, res) => {
+  res.status(HTTP_OK_STATUS);
+});
+
+app.post('/login', userToken, (req, res) => {
   res.status(HTTP_OK_STATUS);
 });
 

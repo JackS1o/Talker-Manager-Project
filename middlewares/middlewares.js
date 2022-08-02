@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 
 const PATH = './talker.json';
+const crypto = require('crypto');
 
 const findTalker = async (_req, res) => {
   const talkers = await fs.readFile(PATH, 'utf8').then((data) => JSON.parse(data));
@@ -20,7 +21,20 @@ const findTalkerId = async (req, res) => {
   return res.status(200).send(talker);
 };
 
+const userToken = (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email e senha são obrigatórios' });
+  }
+  
+  const token = crypto.randomBytes(8).toString('hex');
+
+  return res.status(200).json({ token });
+};
+
 module.exports = {
   findTalker,
   findTalkerId,
+  userToken,
 };
