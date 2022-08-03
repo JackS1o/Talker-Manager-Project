@@ -49,6 +49,21 @@ createTalkerPart3, async (req, res) => {
   return res.status(200).json(talkers2[talkerIndex]);
 });
 
+app.delete('/talker/:id', async (req, res) => {
+  const { authorization } = req.headers;
+  const { id } = req.params;
+
+  if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });
+  if (authorization.length !== 16) return res.status(401).json({ message: 'Token inválido' });
+
+  const talker = await fs.readFile(PATH, 'utf8');
+  const talkers = JSON.parse(talker);
+  const talkerIndex = talkers.findIndex((r) => r.id === Number(id));
+  talkers.splice(talkerIndex, 1);
+  await fs.writeFile(PATH, JSON.stringify(talkers));
+  return res.status(204).end();
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
