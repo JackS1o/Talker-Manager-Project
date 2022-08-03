@@ -28,7 +28,7 @@ app.post('/login', userToken, (_req, res) => {
 });
 
 app.post('/talker', createTalker, createTalkerPart2, watchedAtValidation,
-  createTalkerPart3, addNewTalker, (req, res) => {
+  createTalkerPart3, addNewTalker, (_req, res) => {
   res.status(HTTP_OK_STATUS);
 });
 
